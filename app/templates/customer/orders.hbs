@@ -20,7 +20,6 @@
                 </thead>
                 <tbody>
 {{#each this.model as |order index|}}
-{{#let index as |num|}}
                     <tr>
                         <td class="text-center">{{calculate index '1' '+'}}</td>
                         <td>{{order.menuItem.name}}</td>
@@ -28,7 +27,6 @@
                         <td>{{thousands_separator order.qty}}</td>
                         <td>{{thousands_separator (calculate order.menuItem.price order.qty '*')}}</td>
                     </tr>
-{{/let}}
 {{/each}}
                 </tbody>
                 <tfoot>
