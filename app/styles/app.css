@@ -1,1 +1,32 @@
 /* Ember supports plain CSS out of the box. More info: https://cli.emberjs.com/release/advanced-use/stylesheets/ */
+
+body > #first-main-container {
+  min-width: none;
+  min-height: 85vh;
+}
+
+main#welcome-page {
+  width: 48rem;
+  height: auto;
+}
+
+main#sign-in-form,
+main#sign-up-form {
+  max-width: 24rem;
+  max-height: none;
+}
+
+main#dishes .card {
+  width: 18rem;
+  height: auto;
+}
+
+main#dish #dish-detail {
+  width: 24rem;
+  height: auto;
+}
+
+main#dish #order-form {
+  width: 22rem;
+  height: auto;
+}

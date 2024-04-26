@@ -1,0 +1,21 @@
+{{page-title "Dishes"}}
+
+<main class="container" id="dishes">
+  <div class="row">
+    <div class="col">
+      <h4>Dishes</h4>
+    </div>
+  </div>
+  <div class="row">
+{{#each this.model key="id" as |dish|}}
+    <div class="card m-3">
+      <img src="/images/dishes/{{dish.image}}" class="card-img-top" alt="{{dish.name}}">
+      <div class="card-body">
+        <h4 class="card-title pb-1">{{dish.name}}</h4>
+        <p class="card-text pb-2">{{thousands_separator dish.price}}</p>
+        <LinkTo @route="dishes.dish" @model={{dish}} class="btn btn-primary">Order</LinkTo>
+      </div>
+    </div>
+{{/each}}
+  </div>
+</main>

@@ -1,0 +1,43 @@
+{{page-title "Orders"}}
+
+<main class="container" id="orders">
+    <div class="row mb-3">
+        <div class="col">
+            <h3>Your Orders</h3>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-10">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th scope="col" class="text-center">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Qty</th>
+                        <th scope="col">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+{{#each this.model as |order index|}}
+{{#let index as |num|}}
+                    <tr>
+                        <td class="text-center">{{calculate index '1' '+'}}</td>
+                        <td>{{order.menuItem.name}}</td>
+                        <td>{{thousands_separator order.menuItem.price}}</td>
+                        <td>{{thousands_separator order.qty}}</td>
+                        <td>{{thousands_separator (calculate order.menuItem.price order.qty '*')}}</td>
+                    </tr>
+{{/let}}
+{{/each}}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="4" class="fs-5">Grand total</th>
+                        <th>{{thousands_separator (get (get this.model (calculate this.model.length '1' '-')) 'grand_total')}}</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</main>

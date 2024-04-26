@@ -1,7 +1,15 @@
-{{page-title "BotdistriktOrders"}}
+{{#let "Botdistrikt Restaurant Orders" as |appName|}}
+{{page-title appName}}
 
-{{! The following component displays Ember's default welcome message. }}
-<WelcomePage />
-{{! Feel free to remove this! }}
+<div class="container py-3" id="first-main-container">
+  <Header @appName={{appName}} />
+  {{outlet}}
+</div>
 
-{{outlet}}
+<div class="container">
+  <footer class="mt-4 py-3 border-top">
+    <p class="text-center text-body-secondary">&copy; 2024 Company, Inc</p>
+  </footer>
+</div>
+
+{{/let}}
