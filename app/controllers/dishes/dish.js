@@ -13,7 +13,9 @@ export default class DishesDishController extends Controller {
   submit(event) {
     event.preventDefault();
 
-    const cookieMatch = document.cookie.match(/auth-username\=([^;]*)/);
+    event.submitter.disabled = true;
+
+    const cookieMatch = document.cookie.match(/auth-username=([^;]*)/);
     const store = this.store;
     const router = this.router;
 
@@ -34,8 +36,12 @@ export default class DishesDishController extends Controller {
           .then(function (response) {
             if (!response.isError) {
               router.transitionTo('customer.orders');
+            } else {
+              event.submitter.disabled = false;
             }
           });
+      } else {
+        event.submitter.disabled = false;
       }
     });
   }

@@ -16,6 +16,8 @@ export default class CustomerSignUpController extends Controller {
   async submit(event) {
     event.preventDefault();
 
+    event.submitter.disabled = true;
+
     const router = this.router;
 
     if (
@@ -35,12 +37,14 @@ export default class CustomerSignUpController extends Controller {
           router.replaceWith('customer.sign-in');
         },
         function (e) {
+          event.submitter.disabled = false;
           event.target.previousElementSibling.textContent = e.error;
 
           event.target.previousElementSibling.classList.add('show');
         },
       );
     } else {
+      event.submitter.disabled = false;
       event.target.previousElementSibling.textContent = 'Invalid!';
 
       event.target.previousElementSibling.classList.add('show');

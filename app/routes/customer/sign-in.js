@@ -5,7 +5,7 @@ export default class CustomerSignInRoute extends Route {
   @service router;
 
   beforeModel() {
-    if (document.cookie.match(/auth-token\=([^;]*)/)) {
+    if (document.cookie.match(/auth-token=([^;]*)/)) {
       this.router.transitionTo('index');
     }
   }

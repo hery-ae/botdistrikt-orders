@@ -13,7 +13,7 @@ export default class ApplicationAdapter extends RESTAdapter {
       'Content-Type': 'application/json',
     };
 
-    let cookieMatch = document.cookie.match(/auth-token\=([^;]*)/);
+    let cookieMatch = document.cookie.match(/auth-token=([^;]*)/);
 
     if (cookieMatch) {
       headers['X-Access-Token'] = cookieMatch[1];

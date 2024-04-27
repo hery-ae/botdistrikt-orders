@@ -5,7 +5,7 @@ import fetch from 'fetch';
 
 export default class HeaderComponent extends Component {
   get authUsername() {
-    let match = document.cookie.match(/auth-username\=([^;]*)/);
+    let match = document.cookie.match(/auth-username=([^;]*)/);
 
     if (match) {
       return match[1];
@@ -34,7 +34,7 @@ export default class HeaderComponent extends Component {
 
     fetch(String(ENV.API_URL).concat('/customers/logout'), {
       method: 'POST',
-    }).then(function (response) {
+    }).then(function () {
       window.location.reload();
     });
   }

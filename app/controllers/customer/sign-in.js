@@ -1,13 +1,10 @@
 import Controller from '@ember/controller';
 import { action, set } from '@ember/object';
-import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import ENV from 'botdistrikt-orders/config/environment';
 import fetch from 'fetch';
 
 export default class CustomerSignInController extends Controller {
-  @service router;
-
   @tracked username = '';
   @tracked password = '';
 
@@ -15,7 +12,7 @@ export default class CustomerSignInController extends Controller {
   submit(event) {
     event.preventDefault();
 
-    const router = this.router;
+    event.submitter.disabled = true;
 
     if (this.username && this.password) {
       fetch(
@@ -58,8 +55,12 @@ export default class CustomerSignInController extends Controller {
           });
         } else {
           event.target.previousElementSibling.classList.add('show');
+
+          event.submitter.disabled = false;
         }
       });
+    } else {
+      event.submitter.disabled = false;
     }
   }
 }

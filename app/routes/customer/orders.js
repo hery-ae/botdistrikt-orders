@@ -6,14 +6,14 @@ export default class CustomerOrdersRoute extends Route {
   @service router;
 
   beforeModel() {
-    if (!document.cookie.match(/auth-token\=([^;]*)/)) {
+    if (!document.cookie.match(/auth-token=([^;]*)/)) {
       this.router.replaceWith('customer.sign-in');
     }
   }
 
-  async model(params) {
+  async model() {
     let store = this.store;
-    let orders = await store.findAll('order', {reload: true});
+    let orders = await store.findAll('order', { reload: true });
 
     store.pushPayload(
       orders.reduce(async function (orders, order, index) {

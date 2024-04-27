@@ -6,7 +6,7 @@ export default class DishesDishRoute extends Route {
   @service router;
 
   beforeModel() {
-    if (!document.cookie.match(/auth-token\=([^;]*)/)) {
+    if (!document.cookie.match(/auth-token=([^;]*)/)) {
       this.router.replaceWith('customer.sign-in');
     }
   }

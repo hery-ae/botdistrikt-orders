@@ -2,7 +2,7 @@ import ApplicationAdapter from './application';
 
 export default class OrderAdapter extends ApplicationAdapter {
   urlForFindAll(modelName, snapshot) {
-    let cookieMatch = document.cookie.match(/auth-username\=([^;]*)/);
+    let cookieMatch = document.cookie.match(/auth-username=([^;]*)/);
 
     return super
       .urlForFindAll(null, snapshot)
