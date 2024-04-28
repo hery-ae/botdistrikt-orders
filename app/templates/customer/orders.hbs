@@ -25,7 +25,7 @@
                         <td>{{order.menuItem.name}}</td>
                         <td>{{thousands_separator order.menuItem.price}}</td>
                         <td>{{thousands_separator order.qty}}</td>
-                        <td>{{thousands_separator (calculate order.menuItem.price order.qty '*')}}</td>
+                        <td>{{thousands_separator order.total}}</td>
                     </tr>
 {{/each}}
                 </tbody>

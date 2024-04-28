@@ -22,11 +22,11 @@ export default class CustomerOrdersRoute extends Route {
           order.menu_item_id,
         );
 
+        order.total = order.menuItem.get('price') * order.qty;
+
         if (index > 0) {
           orders = await orders;
-          order.grand_total =
-            orders[index - 1].grand_total +
-            order.menuItem.get('price') * order.qty;
+          order.grand_total = orders[index - 1].grand_total + order.total;
         } else {
           order.grand_total = order.menuItem.get('price') * order.qty;
         }

@@ -12,6 +12,6 @@ module('Integration | Helper | thousandsSeparator', function (hooks) {
 
     await render(hbs`{{thousands-separator this.inputValue}}`);
 
-    assert.dom().hasText('1234');
+    assert.dom().hasText('1,234');
   });
 });

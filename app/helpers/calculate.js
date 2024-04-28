@@ -15,6 +15,6 @@ export default helper(function calculate(positional /*, named*/) {
       return Number(positional[0]) / Number(positional[1]);
 
     default:
-      return null;
+      return positional;
   }
 });

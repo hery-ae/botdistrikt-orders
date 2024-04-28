@@ -2,8 +2,19 @@ import Component from '@glimmer/component';
 import { action, set } from '@ember/object';
 import ENV from 'botdistrikt-orders/config/environment';
 import fetch from 'fetch';
+import bootstrap from 'bootstrap';
 
 export default class HeaderComponent extends Component {
+  constructor(owner, args) {
+    super(owner, args);
+
+    document.body.onload = function () {
+      if (document.querySelector('.dropdown')) {
+        new bootstrap.Dropdown(document.querySelector('.dropdown'));
+      }
+    };
+  }
+
   get authUsername() {
     let match = document.cookie.match(/auth-username=([^;]*)/);
 
@@ -11,12 +22,7 @@ export default class HeaderComponent extends Component {
       return match[1];
     }
 
-    return null;
-  }
-
-  @action
-  dropdownToggle(event) {
-    event.target.nextElementSibling.classList.toggle('show');
+    return undefined;
   }
 
   @action

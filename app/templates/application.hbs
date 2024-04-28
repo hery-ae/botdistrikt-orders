@@ -2,7 +2,11 @@
 {{page-title appName}}
 
 <div class="container py-3" id="first-main-container">
-  <Header @appName={{appName}} />
+  <Header @appName={{appName}}>
+    <LinkTo @route="customer.sign-in" class="me-3 link-body-emphasis text-decoration-none">
+      Sign In
+    </LinkTo>
+  </Header>
   {{outlet}}
 </div>
 

@@ -5,5 +5,5 @@ export default helper(function thousandsSeparator(positional /*, named*/) {
     return Number(positional[0]).toLocaleString();
   }
 
-  return null;
+  return positional;
 });
