@@ -23,16 +23,16 @@
                     <tr>
                         <td class="text-center">{{calculate index '1' '+'}}</td>
                         <td>{{order.menuItem.name}}</td>
-                        <td>{{thousands_separator order.menuItem.price}}</td>
-                        <td>{{thousands_separator order.qty}}</td>
-                        <td>{{thousands_separator order.total}}</td>
+                        <td>{{local_string order.menuItem.price}}</td>
+                        <td>{{local_string order.qty}}</td>
+                        <td>{{local_string order.total}}</td>
                     </tr>
 {{/each}}
                 </tbody>
                 <tfoot>
                     <tr>
                         <th colspan="4" class="fs-5">Grand total</th>
-                        <th>{{thousands_separator (get (get this.model (calculate this.model.length '1' '-')) 'grand_total')}}</th>
+                        <th>{{local_string (get (get this.model (calculate this.model.length '1' '-')) 'grand_total')}}</th>
                     </tr>
                 </tfoot>
             </table>
