@@ -12,7 +12,7 @@
       <img src="/images/dishes/{{dish.image}}" class="card-img-top" alt="{{dish.name}}">
       <div class="card-body">
         <h4 class="card-title pb-1">{{dish.name}}</h4>
-        <p class="card-text pb-2">{{thousands_separator dish.price}}</p>
+        <p class="card-text pb-2">{{local_string dish.price}}</p>
         <LinkTo @route="dishes.dish" @model={{dish}} class="btn btn-primary">Order</LinkTo>
       </div>
     </div>

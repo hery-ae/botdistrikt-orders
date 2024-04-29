@@ -6,7 +6,7 @@
       <img src="/images/dishes/{{this.model.image}}" class="card-img-top" alt="{{this.model.name}}">
       <div class="card-body">
         <h4 class="card-title pb-1">{{this.model.name}}</h4>
-        <p class="card-text pb-2">{{thousands_separator this.model.price}}</p>
+        <p class="card-text pb-2">{{local_string this.model.price}}</p>
       </div>
     </div>
     <div class="card m-3" id="order-form">
