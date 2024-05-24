@@ -5,6 +5,4 @@ export default class MenuItemModel extends Model {
   @attr image;
   @attr description;
   @attr price;
-  @attr price_tag;
-  @attr image_path;
 }

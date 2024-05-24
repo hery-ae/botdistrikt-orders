@@ -2,11 +2,16 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 
 export default class CustomerSignInRoute extends Route {
-  @service router;
+  @service customer;
 
   beforeModel() {
-    if (document.cookie.match(/auth-token=([^;]*)/)) {
-      this.router.transitionTo('index');
+    if (this.customer.isAuthenticated) {
+      this._router.transitionTo('index');
     }
+  }
+
+  setupController(controller) {
+    super.setupController(...arguments);
+    controller.setDefaultValues();
   }
 }

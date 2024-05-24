@@ -20,10 +20,6 @@ module.exports = function (environment) {
     },
   };
 
-  ENV.API_HOST = process.env.API_HOST;
-  ENV.API_NAMESPACE = process.env.API_NAMESPACE;
-  ENV.COOKIE_MAX_AGE = process.env.COOKIE_MAX_AGE;
-
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
     // ENV.APP.LOG_ACTIVE_GENERATION = true;

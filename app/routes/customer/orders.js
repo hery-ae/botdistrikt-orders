@@ -3,40 +3,23 @@ import { service } from '@ember/service';
 
 export default class CustomerOrdersRoute extends Route {
   @service store;
-  @service router;
+  @service customer;
 
   beforeModel() {
-    if (!document.cookie.match(/auth-token=([^;]*)/)) {
-      this.router.replaceWith('customer.sign-in');
+    if (!this.customer.isAuthenticated) {
+      this._router.transitionTo('customer.sign-in', {
+        queryParams: {
+          next: 'customer.orders',
+        },
+      });
     }
   }
 
-  async model() {
-    let store = this.store;
-    let orders = await store.findAll('order', { reload: true });
+  model() {
+    const customer_id = this.customer.acustomer.customer_id;
 
-    store.pushPayload(
-      orders.reduce(async function (orders, order, index) {
-        order.menuItem = await store.findRecord(
-          'menu-item',
-          order.menu_item_id,
-        );
-
-        order.total = order.menuItem.get('price') * order.qty;
-
-        if (index > 0) {
-          orders = await orders;
-          order.grand_total = orders[index - 1].grand_total + order.total;
-        } else {
-          order.grand_total = order.menuItem.get('price') * order.qty;
-        }
-
-        orders.push(order);
-
-        return orders;
-      }, []),
-    );
-
-    return store.peekAll('order');
+    return this.store.findRecord('customer', customer_id).then((response) => {
+      return response.orders.reload();
+    });
   }
 }

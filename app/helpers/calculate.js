@@ -1,20 +1,36 @@
 import { helper } from '@ember/component/helper';
 
-export default helper(function calculate(positional /*, named*/) {
-  switch (String(positional[2])) {
+export default helper(function calculate(positional, named) {
+  switch (named.operator) {
     case '+':
-      return Number(positional[0]) + Number(positional[1]);
+      return positional.reduce((result, n) => {
+        return (result += Number(n));
+      }, 0);
 
     case '-':
-      return Number(positional[0]) - Number(positional[1]);
+      return positional.reduce((result, n) => {
+        return (result -= Number(n));
+      }, 0);
 
     case '*':
-      return Number(positional[0]) * Number(positional[1]);
+      return positional.reduce((result, n, i) => {
+        if (i < 1) {
+          return (result = Number(n));
+        }
+
+        return (result = result * Number(n));
+      }, undefined);
 
     case '/':
-      return Number(positional[0]) / Number(positional[1]);
+      return positional.reduce((result, n, i) => {
+        if (i < 1) {
+          return (result = Number(n));
+        }
+
+        return (result = result / Number(n));
+      }, undefined);
 
     default:
-      return positional;
+      return positional.join('');
   }
 });

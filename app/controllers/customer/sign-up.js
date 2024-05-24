@@ -7,13 +7,25 @@ export default class CustomerSignUpController extends Controller {
   @service store;
   @service router;
 
-  @tracked email = '';
-  @tracked username = '';
-  @tracked password = '';
-  @tracked confirm = '';
+  @tracked email;
+  @tracked username;
+  @tracked password;
+  @tracked confirm;
+
+  constructor() {
+    super(...arguments);
+    this.setDefaultValues();
+  }
+
+  setDefaultValues() {
+    this.email = '';
+    this.username = '';
+    this.password = '';
+    this.confirm = '';
+  }
 
   @action
-  async submit(event) {
+  submit(event) {
     event.preventDefault();
 
     event.submitter.disabled = true;
@@ -34,7 +46,7 @@ export default class CustomerSignUpController extends Controller {
 
       customer.save().then(
         function () {
-          router.replaceWith('customer.sign-in');
+          router.transitionTo('customer.sign-in');
         },
         function (e) {
           event.submitter.disabled = false;

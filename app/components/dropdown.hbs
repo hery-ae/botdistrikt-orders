@@ -1,0 +1,12 @@
+<div class="dropdown">
+    {{yield this.bsDropdown}}
+    <ul class="dropdown-menu">
+{{#each @links as |link|}}
+      <li>
+        <LinkTo @route={{link.route}} class="dropdown-item">
+          {{link.text}}
+        </LinkTo>
+      </li>
+{{/each}}
+    </ul>
+</div>

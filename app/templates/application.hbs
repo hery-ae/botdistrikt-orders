@@ -1,19 +1,36 @@
-{{#let "Botdistrikt Restaurant Orders" as |appName|}}
-{{page-title appName}}
-
-<div class="container py-3" id="first-main-container">
-  <Header @appName={{appName}}>
-    <LinkTo @route="customer.sign-in" class="me-3 link-body-emphasis text-decoration-none">
-      Sign In
-    </LinkTo>
-  </Header>
-  {{outlet}}
-</div>
+{{page-title (this.app_title)}}
 
 <div class="container">
-  <footer class="mt-4 py-3 border-top">
-    <p class="text-center text-body-secondary">&copy; 2024 Company, Inc</p>
-  </footer>
+  <div class="row mt-3">
+    <header class="col-auto me-auto my-auto">
+      <div class="d-flex justify-content-start align-items-center">
+        <img src="{{this.target.rootURL}}images/captive-portal.svg" alt="captive portal" class="img-fluid" />
+        <h3 class="fs-4 ms-2 mb-0">
+          <LinkTo @route="index" class="link-body-emphasis text-decoration-none">{{this.app_title}}</LinkTo>
+        </h3>
+      </div>
+    </header>
+    <Navigation class="col-auto" as |routeName isSignIn|>
+{{#if isSignIn}}
+      <button class="btn btn-link text-decoration-none" disabled type="button">
+        Sign in
+      </button>
+{{else}}
+      <button class="btn btn-link text-decoration-none" type="button">
+        <LinkTo @route="customer.sign-in" @query={{hash next=routeName}}
+          class="link-body-emphasis text-decoration-none">
+          Sign in
+        </LinkTo>
+      </button>
+{{/if}}
+    </Navigation>
+  </div>
+  <hr />
+  {{outlet}}
+  <hr />
+  <div class="row">
+    <footer class="py-1">
+      <p class="text-center text-body-secondary">&copy; 2024 Company, Inc</p>
+    </footer>
+  </div>
 </div>
-
-{{/let}}

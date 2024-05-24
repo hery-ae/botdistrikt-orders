@@ -3,11 +3,21 @@ import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
-export default class DishesDishController extends Controller {
+export default class DishesIdController extends Controller {
   @service store;
   @service router;
+  @service customer;
 
-  @tracked qty = 1;
+  @tracked qty;
+
+  constructor() {
+    super(...arguments);
+    this.setDefaultValues();
+  }
+
+  setDefaultValues() {
+    this.qty = 1;
+  }
 
   @action
   submit(event) {
@@ -15,19 +25,17 @@ export default class DishesDishController extends Controller {
 
     event.submitter.disabled = true;
 
-    const cookieMatch = document.cookie.match(/auth-username=([^;]*)/);
-    const store = this.store;
-    const router = this.router;
-
-    const order = store.createRecord('order', {
+    const order = this.store.createRecord('order', {
       menu_item_id: this.model.id,
-      customer_username: cookieMatch[1],
+      customer_id: this.customer.customer_id,
       qty: this.qty,
     });
 
+    const _this = this;
+
     order.save().then(function (response) {
       if (!response.isError) {
-        store
+        _this.store
           .createRecord('menu-item-order', {
             menu_item_id: response.menu_item_id,
             order_id: response.id,
@@ -35,7 +43,7 @@ export default class DishesDishController extends Controller {
           .save()
           .then(function (response) {
             if (!response.isError) {
-              router.transitionTo('customer.orders');
+              _this.router.transitionTo('customer.orders');
             } else {
               event.submitter.disabled = false;
             }

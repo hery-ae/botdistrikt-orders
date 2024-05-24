@@ -1,11 +1,12 @@
-body > #first-main-container {
-  min-width: none;
-  min-height: 85vh;
+body > .container {
+  width: 60rem;
+  height: auto;
+  max-width: 100%;
+  min-height: 100vh;
 }
 
-main#welcome-page {
-  width: 48rem;
-  height: auto;
+main {
+  min-height: 75vh;
 }
 
 main#sign-in-form,
@@ -16,15 +17,5 @@ main#sign-up-form {
 
 main#dishes .card {
   width: 18rem;
-  height: auto;
-}
-
-main#dish #dish-detail {
-  width: 24rem;
-  height: auto;
-}
-
-main#dish #order-form {
-  width: 22rem;
   height: auto;
 }

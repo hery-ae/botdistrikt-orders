@@ -1,28 +1,41 @@
 import RESTAdapter from '@ember-data/adapter/rest';
-import ENV from 'botdistrikt-orders/config/environment';
-import { dasherize } from '@ember/string';
-import { pluralize } from 'ember-inflector';
+import { service } from '@ember/service';
+import { decamelize } from 'botdistrikt-orders/utils/string-utils';
 
 export default class ApplicationAdapter extends RESTAdapter {
-  host = ENV.API_HOST;
-  namespace = ENV.API_NAMESPACE;
+  @service customer;
+
+  host = 'http://localhost:3000';
+  namespace = 'api';
+
+  _headers = {};
 
   get headers() {
-    let headers = {
-      Accept: 'application/json, text/plain',
-      'Content-Type': 'application/json',
-    };
+    this._headers.Accept = 'application/json, text/plain';
+    this._headers['Content-Type'] = 'application/json';
 
-    let cookieMatch = document.cookie.match(/auth-token=([^;]*)/);
-
-    if (cookieMatch) {
-      headers['X-Access-Token'] = cookieMatch[1];
+    if (this.customer.acustomer) {
+      this._headers['X-Access-Token'] = this.customer.acustomer.access_token;
     }
 
-    return headers;
+    return this._headers;
   }
 
-  pathForType(modelName) {
-    return pluralize(dasherize(modelName));
+  set headers(header) {
+    Object.assign(this._headers, header);
+  }
+
+  pathForType() {
+    let path = super.pathForType(...arguments);
+
+    return decamelize(path, '-');
+  }
+
+  findRecord(store, type, id, snapshot) {
+    if (snapshot.adapterOptions && snapshot.adapterOptions.access_token) {
+      this.headers = { 'X-Access-Token': snapshot.adapterOptions.access_token };
+    }
+
+    return super.findRecord(...arguments);
   }
 }

@@ -1,13 +1,11 @@
 import { module, test } from 'qunit';
-
 import { setupTest } from 'botdistrikt-orders/tests/helpers';
 
-module('Unit | Adapter | order', function (hooks) {
+module('Unit | Route | dishes/id', function (hooks) {
   setupTest(hooks);
 
-  // Replace this with your real tests.
   test('it exists', function (assert) {
-    let adapter = this.owner.lookup('adapter:order');
-    assert.ok(adapter);
+    let route = this.owner.lookup('route:dishes/id');
+    assert.ok(route);
   });
 });
