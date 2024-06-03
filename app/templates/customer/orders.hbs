@@ -1,43 +1,19 @@
 {{page-title "Orders"}}
 
-<div class="row">
-  <main class="col" id="orders">
-    <div class="row mb-3">
-      <div class="col">
-        <h3>Your Orders</h3>
-      </div>
-    </div>
-    <div class="row mb-3">
-      <div class="col-10">
-        <table class="table table-bordered">
-          <thead>
-            <tr>
-              <th scope="col" class="text-center">#</th>
-              <th scope="col">Name</th>
-              <th scope="col">Price</th>
-              <th scope="col">Qty</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-{{#each this.model as |order index|}}
-            <tr>
-              <td class="text-center">{{calculate index "1" operator="+"}}</td>
-              <td>{{order.menuItem.name}}</td>
-              <td>{{local_string order.menuItem.price}}</td>
-              <td>{{local_string order.qty}}</td>
-              <td>{{local_string (calculate order.menuItem.price order.qty operator="*")}}</td>
-            </tr>
-{{/each}}
-          </tbody>
-          <tfoot>
-            <tr>
-              <th colspan="4" class="fs-5">Grand total</th>
-              <th>{{local_string (this.grand_total this.model)}}</th>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-    </div>
-  </main>
+<div class="row mb-3">
+  <div class="col">
+    <h3>Your Orders</h3>
+  </div>
+</div>
+<div class="row mb-3">
+  <div class="col-10">
+    <Orders class="table table-bordered" @columns={{array "#" "Name" "Price" "Qty" "Total"}} @orders={{this.model}} as |grandTotal|>
+      <tfoot>
+        <tr>
+          <th colspan="4" class="fs-5">Grand total</th>
+          <th>{{local-string grandTotal}}</th>
+        </tr>
+      </tfoot>
+    </Orders>
+  </div>
 </div>

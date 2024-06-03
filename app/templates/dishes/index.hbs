@@ -1,23 +1,19 @@
-<div class="row">
-  <main id="dishes">
-    <div class="col-auto">
-      <h4>Dishes</h4>
-    </div>
-    <div class="col-12">
-      <div class="row">
+<div class="row mb-3">
+  <div class="col">
+    <h3>Dishes</h3>
+  </div>
+</div>
+<div class="row g-3 mb-3">
 {{#each this.model key="id" as |dish|}}
-        <div class="col-auto">
-          <div class="card">
-            <img src="./images/dishes/{{dish.image}}" class="card-img-top" alt="{{dish.name}}">
-            <div class="card-body">
-              <h4 class="card-title pb-1">{{dish.name}}</h4>
-              <p class="card-text pb-2">{{local_string dish.price}}</p>
-              <LinkTo @route="dishes.id" @model={{dish}} class="btn btn-primary">Order</LinkTo>
-            </div>
-          </div>
-        </div>
-{{/each}}
+  <div class="col-auto ">
+    <div id="dish-index-card" class="card">
+      <img src="{{concat dish.image_base_url dish.image_file_name}}" class="card-img-top" alt="{{dish.image_file_name}}">
+      <div class="card-body">
+        <h4 class="card-title pb-1">{{dish.name}}</h4>
+        <p class="card-text pb-2">{{local-string dish.price}}</p>
+        <LinkTo @route="dishes.id" @model={{dish}} class="btn btn-primary">Order</LinkTo>
       </div>
     </div>
-  </main>
+  </div>
+{{/each}}
 </div>

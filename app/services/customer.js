@@ -1,37 +1,104 @@
-import Service from '@ember/service';
-import { set, get } from '@ember/object';
-import { underscore } from 'botdistrikt-orders/utils/string-utils';
+import Service, { service } from '@ember/service';
+import { set } from '@ember/object';
+import fetch from 'fetch';
 
 export default class CustomerService extends Service {
+  @service store;
+
+  currentCustomer;
+
+  cookieProps = [
+    {
+      name: 'customer-id',
+      key: 'userId',
+    },
+    {
+      name: 'access-token',
+      key: 'id',
+    },
+  ];
+
   constructor() {
     super(...arguments);
 
-    this.authenticate(
-      Object.keys(this.cookie_props).reduce((props, key) => {
-        props[this.cookie_props[key]] = this.cookie(key);
-
-        return props;
-      }, {}),
-    );
+    if (this.isAuthenticated()) {
+      this.setCurrentCustomer(this.getCookie('customer-id'));
+    }
   }
 
-  get isAuthenticated() {
-    return Object.keys(this.cookie_props).reduce((props, key) => {
-      return Boolean(this.cookie(key));
-    }, true);
+  authenticate(username, password) {
+    const customer = this;
+
+    return fetch(
+      this.store.adapterFor('customer').buildURL('customer').concat('/login'),
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      },
+    ).then(async function (response) {
+      if (response.ok) {
+        await response.json().then(function (json) {
+          customer.cookieProps.forEach((prop) => {
+            customer.setCookie(prop.name, json);
+          });
+
+          customer.setCurrentCustomer(
+            json[
+              customer.cookieProps.find((prop) => prop.name === 'customer-id')
+                .key
+            ],
+          );
+        });
+      }
+
+      return customer;
+    });
   }
 
-  cookie_props = {
-    'customer-id': 'userId',
-    'access-token': 'id',
-  };
+  isAuthenticated() {
+    return this.cookieProps.every((prop) => this.hasCookie(prop.name));
+  }
 
-  cookie(key) {
-    if (
-      document.cookie
-        .split('; ')
-        .some((cookie) => cookie.trim().startsWith(String(key).concat('=')))
-    ) {
+  reset() {
+    const customer = this;
+
+    return fetch(
+      this.store.adapterFor('customer').buildURL('customer', 'logout'),
+      {
+        method: 'POST',
+        headers: this.store.adapterFor('customer').headers,
+      },
+    ).then(function (response) {
+      if (response.ok) {
+        customer.resetCookie();
+        customer.store.unloadRecord(customer.currentCustomer);
+        set(customer, 'currentCustomer', undefined);
+      }
+
+      return customer;
+    });
+  }
+
+  setCookie(key, value) {
+    value = String(
+      value[this.cookieProps.find((prop) => prop.name === key).key],
+    )
+      .concat('; path=/; max-age=')
+      .concat(
+        Math.round(value.ttl + (Date.now() - Date.parse(value.created)) / 1000),
+      );
+
+    document.cookie = String(key).concat('=').concat(value);
+  }
+
+  getCookie(key) {
+    if (this.hasCookie(key)) {
       let cookie = document.cookie
         .split('; ')
         .find((cookie) => cookie.trim().startsWith(String(key).concat('=')))
@@ -43,35 +110,33 @@ export default class CustomerService extends Service {
     return undefined;
   }
 
-  authenticate(customer) {
-    set(this, 'acustomer', {});
-    set(this.acustomer, 'is_authenticated', true);
-
-    Object.keys(this.cookie_props).forEach((prop) => {
-      const value = get(customer, get(this.cookie_props, prop));
-
-      if (value) {
-        set(this.acustomer, underscore(prop), value);
-
-        document.cookie = String(prop)
-          .concat('=')
-          .concat(value)
-          .concat('; path=/; max-age=')
-          .concat(customer.ttl);
-      } else {
-        set(this.acustomer, 'is_authenticated', false);
-      }
-    });
-
-    return this.acustomer;
+  hasCookie(key) {
+    return document.cookie
+      .split('; ')
+      .some((cookie) => cookie.trim().startsWith(String(key).concat('=')));
   }
 
-  resetCustomer() {
-    set(this.acustomer, 'is_authenticated', false);
-
-    Object.keys(this.cookie_props).forEach((key) => {
-      set(this.acustomer, underscore(key), undefined);
-      document.cookie = String(key).concat('=; path=/; max-age=0');
+  resetCookie() {
+    this.cookieProps.forEach((prop) => {
+      document.cookie = String(prop.name).concat('=; path=/; max-age=0');
     });
+  }
+
+  setCurrentCustomer(id) {
+    this.store.pushPayload({
+      customer: {
+        id: id,
+      },
+    });
+
+    this.store.findRecord('customer', id).then((response) => {
+      response.store.peekRecord('customer', id).setProperties(response);
+    });
+
+    set(this, 'currentCustomer', this.store.peekRecord('customer', id));
+  }
+
+  get accessToken() {
+    return this.getCookie('access-token');
   }
 }

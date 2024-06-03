@@ -1,12 +1,12 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'botdistrikt-orders/tests/helpers';
 
-module('Unit | Controller | customer/orders', function (hooks) {
+module('Unit | Controller | customer', function (hooks) {
   setupTest(hooks);
 
   // TODO: Replace this with your real tests.
   test('it exists', function (assert) {
-    let controller = this.owner.lookup('controller:customer/orders');
+    let controller = this.owner.lookup('controller:customer');
     assert.ok(controller);
   });
 });

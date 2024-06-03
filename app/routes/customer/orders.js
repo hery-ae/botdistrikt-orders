@@ -2,24 +2,22 @@ import Route from '@ember/routing/route';
 import { service } from '@ember/service';
 
 export default class CustomerOrdersRoute extends Route {
-  @service store;
   @service customer;
+  @service router;
 
-  beforeModel() {
-    if (!this.customer.isAuthenticated) {
-      this._router.transitionTo('customer.sign-in', {
+  controllerName = 'customer';
+
+  beforeModel(transition) {
+    if (!this.customer.isAuthenticated()) {
+      this.router.transitionTo('customer.sign-in', {
         queryParams: {
-          next: 'customer.orders',
+          next: this.router.urlFor(transition.targetName),
         },
       });
     }
   }
 
   model() {
-    const customer_id = this.customer.acustomer.customer_id;
-
-    return this.store.findRecord('customer', customer_id).then((response) => {
-      return response.orders.reload();
-    });
+    return this.customer.currentCustomer.orders;
   }
 }

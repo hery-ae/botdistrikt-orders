@@ -1,10 +1,10 @@
 import Controller from '@ember/controller';
-import { action } from '@ember/object';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { action } from '@ember/object';
 
-export default class CustomerSignUpController extends Controller {
-  @service store;
+export default class CustomerController extends Controller {
+  @service customer;
   @service router;
 
   @tracked email;
@@ -12,20 +12,55 @@ export default class CustomerSignUpController extends Controller {
   @tracked password;
   @tracked confirm;
 
+  queryParams = ['next'];
+
+  next;
+
+  customerTitle = 'Customer';
+  signInTitle = 'Sign in';
+  signUpTitle = 'Sign up';
+  ordersTitle = 'Orders';
+
   constructor() {
     super(...arguments);
-    this.setDefaultValues();
-  }
 
-  setDefaultValues() {
-    this.email = '';
-    this.username = '';
-    this.password = '';
-    this.confirm = '';
+    this.router.on('routeDidChange', () => {
+      this.email = '';
+      this.username = '';
+      this.password = '';
+      this.confirm = '';
+    });
   }
 
   @action
-  submit(event) {
+  async signIn(event) {
+    event.preventDefault();
+
+    event.submitter.disabled = true;
+
+    if (this.username && this.password) {
+      const customer = await this.customer.authenticate(
+        this.username,
+        this.password,
+      );
+
+      if (customer.isAuthenticated()) {
+        if (this.next) {
+          this.router.transitionTo(this.next);
+        } else {
+          this.router.transitionTo('index');
+        }
+      } else {
+        event.submitter.disabled = false;
+        event.target.previousElementSibling.classList.add('show');
+      }
+    } else {
+      event.submitter.disabled = false;
+    }
+  }
+
+  @action
+  signUp(event) {
     event.preventDefault();
 
     event.submitter.disabled = true;

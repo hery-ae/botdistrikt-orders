@@ -1,4 +1,4 @@
-# Botdistrikt Orders
+# Botdistrikt Restaurant Orders
 
 This README outlines the details of collaborating on this Ember application.
 A short introduction of this app could easily go here.
@@ -22,9 +22,6 @@ You will need the following things properly installed on your computer.
 
 First, set up Botdistrikt API, then run the codes below in cmd.
 
-* `set "API_HOST=<botdistrikt api host>"`
-* `set "API_NAMESPACE=<botdistrikt api namespace>"`
-* `set "COOKIE_MAX_AGE=<the maximum age of the cookie in seconds>"`
 * `npm run start`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 * Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).

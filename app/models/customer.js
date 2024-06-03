@@ -4,9 +4,10 @@ export default class CustomerModel extends Model {
   @attr email;
   @attr username;
   @attr password;
+
   @hasMany('order', {
     async: true,
-    inverse: null,
+    inverse: 'customer',
   })
   orders;
 }

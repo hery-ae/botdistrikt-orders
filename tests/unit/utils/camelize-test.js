@@ -1,10 +1,10 @@
-import stringUtils from 'botdistrikt-orders/utils/string-utils';
+import camelize from 'botdistrikt-orders/utils/camelize';
 import { module, test } from 'qunit';
 
-module('Unit | Utility | string-utils', function () {
+module('Unit | Utility | camelize', function () {
   // TODO: Replace this with your real tests.
   test('it works', function (assert) {
-    let result = stringUtils();
+    let result = camelize('it-works');
     assert.ok(result);
   });
 });

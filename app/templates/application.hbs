@@ -1,32 +1,55 @@
-{{page-title (this.app_title)}}
+<AppTitle as |title|>{{page-title title}}</AppTitle>
 
-<div class="container">
-  <div class="row mt-3">
+<div class="container h-100">
+  <div class="row pt-3">
     <header class="col-auto me-auto my-auto">
       <div class="d-flex justify-content-start align-items-center">
         <img src="{{this.target.rootURL}}images/captive-portal.svg" alt="captive portal" class="img-fluid" />
         <h3 class="fs-4 ms-2 mb-0">
-          <LinkTo @route="index" class="link-body-emphasis text-decoration-none">{{this.app_title}}</LinkTo>
+          <LinkTo @route="index" class="link-body-emphasis text-decoration-none">
+            <AppTitle as |title|>{{title}}</AppTitle>
+          </LinkTo>
         </h3>
       </div>
     </header>
-    <Navigation class="col-auto" as |routeName isSignIn|>
-{{#if isSignIn}}
-      <button class="btn btn-link text-decoration-none" disabled type="button">
-        Sign in
-      </button>
-{{else}}
-      <button class="btn btn-link text-decoration-none" type="button">
-        <LinkTo @route="customer.sign-in" @query={{hash next=routeName}}
-          class="link-body-emphasis text-decoration-none">
-          Sign in
-        </LinkTo>
-      </button>
+    <CurrentCustomer as |currentCustomer|>
+      <div class="col-auto">
+{{#if currentCustomer}}
+        <div class="dropdown">
+          <a class="link-body-emphasis text-decoration-none" href="javascript:void(0)" role="button"
+            data-bs-toggle="dropdown">
+            Hi,
+{{#if currentCustomer.username}}
+            {{concat currentCustomer.username "!"}}
 {{/if}}
-    </Navigation>
+          </a>
+          <ul class="dropdown-menu">
+            <li>
+              <SignOutButton class="dropdown-item">
+                Sign out
+              </SignOutButton>
+            </li>
+            <li>
+              <LinkTo @route="customer.orders" class="dropdown-item">
+                Orders
+              </LinkTo>
+            </li>
+          </ul>
+        </div>
+{{else}}
+        <SignInButton class="btn btn-link link-body-emphasis p-0 text-decoration-none">
+          Sign in
+        </SignInButton>
+{{/if}}
+      </div>
+    </CurrentCustomer>
   </div>
   <hr />
-  {{outlet}}
+  <div class="row">
+    <main>
+      {{outlet}}
+    </main>
+  </div>
   <hr />
   <div class="row">
     <footer class="py-1">

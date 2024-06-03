@@ -4,14 +4,11 @@ import { service } from '@ember/service';
 export default class CustomerSignInRoute extends Route {
   @service customer;
 
-  beforeModel() {
-    if (this.customer.isAuthenticated) {
-      this._router.transitionTo('index');
-    }
-  }
+  controllerName = 'customer';
 
-  setupController(controller) {
-    super.setupController(...arguments);
-    controller.setDefaultValues();
+  beforeModel(transition) {
+    if (this.customer.isAuthenticated()) {
+      transition.router.transitionTo('index');
+    }
   }
 }
