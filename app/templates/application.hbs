@@ -1,4 +1,4 @@
-<AppTitle as |title|>{{page-title title}}</AppTitle>
+{{page-title this.appTitle}}
 
 <div class="container h-100">
   <div class="row pt-3">
@@ -7,42 +7,40 @@
         <img src="{{this.target.rootURL}}images/captive-portal.svg" alt="captive portal" class="img-fluid" />
         <h3 class="fs-4 ms-2 mb-0">
           <LinkTo @route="index" class="link-body-emphasis text-decoration-none">
-            <AppTitle as |title|>{{title}}</AppTitle>
+            {{this.appTitle}}
           </LinkTo>
         </h3>
       </div>
     </header>
-    <CurrentCustomer as |currentCustomer|>
-      <div class="col-auto">
-{{#if currentCustomer}}
-        <div class="dropdown">
-          <a class="link-body-emphasis text-decoration-none" href="javascript:void(0)" role="button"
-            data-bs-toggle="dropdown">
-            Hi,
-{{#if currentCustomer.username}}
-            {{concat currentCustomer.username "!"}}
+    <nav class="col-auto">
+{{#if this.currentCustomer}}
+      <div class="dropdown">
+        <button class="btn btn-link link-body-emphasis py-0 text-decoration-none" data-bs-toggle="dropdown">
+          Hi,
+{{#if this.currentCustomer.username}}
+          {{concat this.currentCustomer.username "!"}}
 {{/if}}
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <SignOutButton class="dropdown-item">
-                Sign out
-              </SignOutButton>
-            </li>
-            <li>
-              <LinkTo @route="customer.orders" class="dropdown-item">
-                Orders
-              </LinkTo>
-            </li>
-          </ul>
-        </div>
-{{else}}
-        <SignInButton class="btn btn-link link-body-emphasis p-0 text-decoration-none">
-          Sign in
-        </SignInButton>
-{{/if}}
+        </button>
+        <ul class="dropdown-menu">
+          <li>
+            <a class="dropdown-item" href="javascript:void(0)" role="button" {{on "click" this.signOut}}>
+              Sign out
+            </a>
+          </li>
+          <li>
+            <LinkTo @route="customer.orders" class="dropdown-item">
+              Orders
+            </LinkTo>
+          </li>
+        </ul>
       </div>
-    </CurrentCustomer>
+{{else}}
+      <button class={{concat "btn" " btn-link" " link-body-emphasis" " py-0" " text-decoration-none" (if this.isSignIn " disabled" )}}
+        href="javascript:void(0)" role="button" {{on "click" this.transitionToSignIn}}>
+        Sign in
+      </button>
+{{/if}}
+    </nav>
   </div>
   <hr />
   <div class="row">

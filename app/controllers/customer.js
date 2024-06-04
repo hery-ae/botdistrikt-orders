@@ -1,11 +1,12 @@
-import Controller from '@ember/controller';
+import ApplicationController from 'botdistrikt-orders/controllers/application';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
-export default class CustomerController extends Controller {
+export default class CustomerController extends ApplicationController {
   @service customer;
   @service router;
+  @service store;
 
   @tracked email;
   @tracked username;
@@ -16,11 +17,6 @@ export default class CustomerController extends Controller {
 
   next;
 
-  customerTitle = 'Customer';
-  signInTitle = 'Sign in';
-  signUpTitle = 'Sign up';
-  ordersTitle = 'Orders';
-
   constructor() {
     super(...arguments);
 
@@ -30,6 +26,16 @@ export default class CustomerController extends Controller {
       this.password = '';
       this.confirm = '';
     });
+  }
+
+  get grandTotal() {
+    return this.model.reduce((total, order) => {
+      if (order.menuItem.get('price')) {
+        return total + order.menuItem.get('price') * order.qty;
+      }
+
+      return total;
+    }, 0);
   }
 
   @action
