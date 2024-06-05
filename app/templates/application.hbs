@@ -1,4 +1,6 @@
-{{page-title this.appTitle}}
+<AppTitle as |title|>
+  {{page-title title}}
+</AppTitle>
 
 <div class="container h-100">
   <div class="row pt-3">
@@ -7,25 +9,27 @@
         <img src="{{this.target.rootURL}}images/captive-portal.svg" alt="captive portal" class="img-fluid" />
         <h3 class="fs-4 ms-2 mb-0">
           <LinkTo @route="index" class="link-body-emphasis text-decoration-none">
-            {{this.appTitle}}
+            <AppTitle as |title|>
+              {{title}}
+            </AppTitle>
           </LinkTo>
         </h3>
       </div>
     </header>
-    <nav class="col-auto">
-{{#if this.currentCustomer}}
+    <Navigation class="col-auto" as |currentCustomer|>
+      {{#if currentCustomer}}
       <div class="dropdown">
-        <button class="btn btn-link link-body-emphasis py-0 text-decoration-none" data-bs-toggle="dropdown">
+        <button class="btn btn-link link-body-emphasis py-0 text-decoration-none" data-bs-toggle="dropdown" type="button">
           Hi,
-{{#if this.currentCustomer.username}}
-          {{concat this.currentCustomer.username "!"}}
-{{/if}}
+          {{#if currentCustomer.username}}
+          {{concat currentCustomer.username "!"}}
+          {{/if}}
         </button>
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-item" href="javascript:void(0)" role="button" {{on "click" this.signOut}}>
+            <SignOutButton class="dropdown-item">
               Sign out
-            </a>
+            </SignOutButton>
           </li>
           <li>
             <LinkTo @route="customer.orders" class="dropdown-item">
@@ -34,13 +38,12 @@
           </li>
         </ul>
       </div>
-{{else}}
-      <button class={{concat "btn" " btn-link" " link-body-emphasis" " py-0" " text-decoration-none" (if this.isSignIn " disabled" )}}
-        href="javascript:void(0)" role="button" {{on "click" this.transitionToSignIn}}>
+      {{else}}
+      <SignInButton class="btn btn-link link-body-emphasis py-0 text-decoration-none">
         Sign in
-      </button>
-{{/if}}
-    </nav>
+      </SignInButton>
+      {{/if}}
+    </Navigation>
   </div>
   <hr />
   <div class="row">

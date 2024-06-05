@@ -4,10 +4,11 @@
   </div>
 </div>
 <div class="row g-3 mb-3">
-{{#each this.model key="id" as |dish|}}
+  {{#each this.model key="id" as |dish|}}
   <div class="col-auto ">
     <div id="dish-index-card" class="card">
-      <img src="{{concat dish.image_base_url dish.image_file_name}}" class="card-img-top" alt="{{dish.image_file_name}}">
+      <img src="{{concat dish.image_base_url dish.image_file_name}}" class="card-img-top"
+        alt="{{dish.image_file_name}}">
       <div class="card-body">
         <h4 class="card-title pb-1">{{dish.name}}</h4>
         <p class="card-text pb-2">{{local-string dish.price}}</p>
@@ -15,5 +16,5 @@
       </div>
     </div>
   </div>
-{{/each}}
+  {{/each}}
 </div>

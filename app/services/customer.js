@@ -1,5 +1,4 @@
 import Service, { service } from '@ember/service';
-import { set } from '@ember/object';
 import fetch from 'fetch';
 
 export default class CustomerService extends Service {
@@ -78,7 +77,7 @@ export default class CustomerService extends Service {
       if (response.ok) {
         customer.resetCookie();
         customer.store.unloadRecord(customer.currentCustomer);
-        set(customer, 'currentCustomer', undefined);
+        delete customer.currentCustomer;
       }
 
       return customer;
@@ -133,7 +132,7 @@ export default class CustomerService extends Service {
       response.store.peekRecord('customer', id).setProperties(response);
     });
 
-    set(this, 'currentCustomer', this.store.peekRecord('customer', id));
+    this.currentCustomer = this.store.peekRecord('customer', id);
   }
 
   get accessToken() {

@@ -1,9 +1,9 @@
-import ApplicationController from 'botdistrikt-orders/controllers/application';
+import Controller from '@ember/controller';
 import { service } from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
-export default class DishController extends ApplicationController {
+export default class DishController extends Controller {
   @service store;
   @service customer;
   @service router;

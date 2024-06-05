@@ -1,8 +1,8 @@
-<form {{on "submit" (get @controller @action)}} ...attributes>
-{{#each @fields as |field|}}
+<form onsubmit={{if @action (get @context @action)}} ...attributes>
+    {{#each @fields as |field|}}
     <label for="{{field.id}}" hidden>{{field.text}}</label>
     <Input @type="{{field.type}}" id="{{field.id}}" class="form-control mb-2 rounded-0" placeholder="{{field.text}}"
-        @value={{get @controller field.id}} />
-{{/each}}
+        @value={{get @context field.id}} />
+    {{/each}}
     <button type="submit" class="btn btn-primary">{{yield}}</button>
 </form>
